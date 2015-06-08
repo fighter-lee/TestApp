@@ -629,6 +629,8 @@ public final class FragmentUtils {
      *
      * @param fragmentManager fragment管理器
      * @return 栈中顶层可见fragment
+     *
+     * 
      */
     public static Fragment getTopShowFragmentInStack(@NonNull FragmentManager fragmentManager) {
         return getTopShowFragmentIsInStack(fragmentManager, null, true);
