@@ -56,6 +56,8 @@ public class HomeActivity extends BaseActivity {
                     for (WebviewBackListener mListener : mListeners) {
                         if (mListener != null) {
                             mListener.pressRefresh();
+
+
                         }
                     }
                     mHandler.sendEmptyMessageDelayed(0, 2000);
