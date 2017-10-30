@@ -1,30 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="top.fighter_lee.testapp" >
+          package="top.fighter_lee.testapp">
 
     <application
+        android:name=".gloable.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".ui.activity.WelcomeActivity" >
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.activity.WelcomeActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.activity.MainActivity"/>
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="59c1c8a0734be457f3000017"/>
+            android:value="59f7381bb27b0a5b02000040"/>
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="7e9df6bfaa78ba79818b2af42b9626e1"/>
+            android:value="cc800beffa449e09de0e6d7f2fa5e93a"/>
+        <!-- <meta-data -->
+        <!-- android:name="${UMENG_CHANNEL_VALUE}" -->
+        <!-- android:value="Channel_ID"/> -->
+        <activity
+            android:name=".ui.activity.HomeActivity"
+            android:label="@string/title_activity_home">
+        </activity>
+
     </application>
 
 </manifest>
