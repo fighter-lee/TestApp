@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="top.fighter_lee.testapp" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity android:name=".ui.activity.WelcomeActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.activity.MainActivity"/>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="59c1c8a0734be457f3000017"/>
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="7e9df6bfaa78ba79818b2af42b9626e1"/>
+    </application>
+
+</manifest>
