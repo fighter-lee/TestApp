@@ -7,6 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -14,7 +18,7 @@ import butterknife.Unbinder;
 public abstract class BaseFragment extends Fragment {
 
     private Unbinder unbinder;
-
+    protected LoadService mBaseLoadService;
     /**
      * 获取布局ID
      */
@@ -29,7 +33,14 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (getContentViewLayoutID() != 0) {
-            return inflater.inflate(getContentViewLayoutID(), container, false);
+            View rootView = inflater.inflate(getContentViewLayoutID(), container, false);
+            mBaseLoadService = LoadSir.getDefault().register(rootView, new Callback.OnReloadListener() {
+                @Override
+                public void onReload(View v) {
+                    onNetReload();
+                }
+            });
+            return mBaseLoadService.getLoadLayout();
         } else {
             return super.onCreateView(inflater, container, savedInstanceState);
         }
@@ -47,4 +58,6 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    protected abstract void onNetReload();
 }
