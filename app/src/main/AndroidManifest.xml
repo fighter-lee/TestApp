@@ -37,17 +37,13 @@
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
             android:value="cc800beffa449e09de0e6d7f2fa5e93a"/>
-        <!-- <meta-data -->
-        <!-- android:name="${UMENG_CHANNEL_VALUE}" -->
-        <!-- android:value="Channel_ID"/> -->
+         <!--<meta-data-->
+         <!--android:name="${UMENG_CHANNEL_VALUE}"-->
+         <!--android:value="Channel_ID"/>-->
         <activity
             android:name=".ui.activity.HomeActivity"
             android:label="@string/title_activity_home">
         </activity>
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="59f7381bb27b0a5b02000040" >
-        </meta-data>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
