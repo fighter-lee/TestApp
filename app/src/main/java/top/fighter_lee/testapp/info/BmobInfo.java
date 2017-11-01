@@ -1,12 +1,10 @@
 package top.fighter_lee.testapp.info;
 
-import cn.bmob.v3.BmobObject;
-
 /**
  * @author fighter_lee
  * @date 2017/10/30
  */
-public class BmobInfo extends BmobObject {
+public class BmobInfo{
 
     public String getUsername() {
         return username;

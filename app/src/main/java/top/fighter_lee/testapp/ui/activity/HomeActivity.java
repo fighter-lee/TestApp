@@ -8,22 +8,17 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import butterknife.BindView;
 import top.fighter_lee.testapp.R;
 import top.fighter_lee.testapp.base.BaseActivity;
 import top.fighter_lee.testapp.inter.WebviewBackListener;
 import top.fighter_lee.testapp.ui.fragment.HomeFragment;
+import top.fighter_lee.testapp.ui.fragment.PageFragment;
 import top.fighter_lee.testapp.utils.FragmentUtils;
 
 public class HomeActivity extends BaseActivity {
@@ -35,7 +30,6 @@ public class HomeActivity extends BaseActivity {
     BottomNavigationView navigation;
     @BindView(R.id.container)
     ConstraintLayout container;
-    private SHARE_MEDIA share_media;
     private Context context = this;
     boolean isExit;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -45,31 +39,10 @@ public class HomeActivity extends BaseActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    FragmentUtils.showFragment(homeFragment);
+                    FragmentUtils.hideAllShowFragment(homeFragment);
                     return true;
-                case R.id.navigation_back:
-                    if (null != homeFragment && homeFragment == FragmentUtils.getTopShowFragment(getSupportFragmentManager())){
-                        if(homeFragment.wvWeb.canGoBack()){
-                            if (null != mListener){
-                                mListener.pressBack();
-                            }
-                        }else{
-                            onKeyDown(KeyEvent.KEYCODE_BACK,new KeyEvent(1,KeyEvent.KEYCODE_BACK));
-                        }
-                    }
-
-                    return true;
-                case R.id.navigation_refresh:
-
-                    if (null != mListener){
-                        mListener.pressRefresh();
-                    }
-                    return true;
-                case R.id.navigation_pay:
-                    Toast.makeText(context, "支付", Toast.LENGTH_SHORT).show();
-                    return true;
-                case R.id.navigation_share:
-                    share();
+                case R.id.navigation_page:
+                    FragmentUtils.hideAllShowFragment(pageFragment);
                     return true;
             }
             return false;
@@ -77,19 +50,15 @@ public class HomeActivity extends BaseActivity {
     };
     private HomeFragment homeFragment;
     private WebviewBackListener mListener;
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(context).onActivityResult(requestCode,resultCode,data);
-    }
+    private PageFragment pageFragment;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        share_media = (SHARE_MEDIA) getIntent().getSerializableExtra("platform");
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         homeFragment = new HomeFragment();
-        FragmentUtils.addFragment(getSupportFragmentManager(), homeFragment, R.id.fl_home);
+        pageFragment = new PageFragment();
+        FragmentUtils.addFragment(getSupportFragmentManager(), pageFragment, R.id.fl_home,true);
+        FragmentUtils.addFragment(getSupportFragmentManager(), homeFragment, R.id.fl_home,false);
     }
 
     @Override
@@ -120,33 +89,6 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
-    public void share() {
-        new ShareAction(this)
-                .withText("下载地址：www.baidu.com")
-                .setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ,SHARE_MEDIA.WEIXIN)
-                .setCallback(new UMShareListener() {
-                    @Override
-                    public void onStart(SHARE_MEDIA share_media) {
-                        Log.d(TAG, "onStart: "+share_media);
-                    }
-
-                    @Override
-                    public void onResult(SHARE_MEDIA share_media) {
-                        Log.d(TAG, "onResult: "+share_media);
-                    }
-
-                    @Override
-                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                        Log.d(TAG, "onError: "+share_media);
-                    }
-
-                    @Override
-                    public void onCancel(SHARE_MEDIA share_media) {
-                        Log.d(TAG, "onCancel: "+share_media);
-                    }
-                })
-                .open();
-    }
 
     Handler mHandler = new Handler() {
 

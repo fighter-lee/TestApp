@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.umeng.message.PushAgent;
 
 import butterknife.ButterKnife;
 import top.fighter_lee.testapp.R;
@@ -21,7 +20,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PushAgent.getInstance(this).onAppStart();
         ActivityCollector.addActivity(this, getClass());
 
         if (getContentViewLayoutID() != 0) {

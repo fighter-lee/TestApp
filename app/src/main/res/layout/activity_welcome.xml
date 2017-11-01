@@ -8,7 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@mipmap/launch_pic"
+
         android:id="@+id/iv_welcome"/>
+    <!--android:src="@mipmap/launch_pic"-->
 
 </LinearLayout>

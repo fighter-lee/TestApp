@@ -3,7 +3,6 @@ package top.fighter_lee.testapp.ui.fragment;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,17 +15,10 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import butterknife.BindView;
-import butterknife.Unbinder;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import top.fighter_lee.testapp.R;
 import top.fighter_lee.testapp.base.BaseFragment;
 import top.fighter_lee.testapp.callback.ErrorCallback;
 import top.fighter_lee.testapp.callback.LoadingCallback;
-import top.fighter_lee.testapp.engine.Network;
-import top.fighter_lee.testapp.info.CaiInfo;
 import top.fighter_lee.testapp.inter.WebviewBackListener;
 import top.fighter_lee.testapp.ui.activity.HomeActivity;
 
@@ -34,13 +26,12 @@ import top.fighter_lee.testapp.ui.activity.HomeActivity;
  * @author fighter_lee
  * @date 2017/10/31
  */
-public class HomeFragment extends BaseFragment {
+public class PageFragment extends BaseFragment {
     private static final String TAG = "HomeFragment";
     @BindView(R.id.wv_web)
     public WebView wvWeb;
     @BindView(R.id.progressbar)
     ProgressBar progressbar;
-    Unbinder unbinder;
 
     Handler handler = new Handler() {
         @Override
@@ -62,39 +53,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void init() {
         setWebView();
-        request();
-    }
-
-    private void request() {
-        Network.getNetApi()
-                .getCaiInfo()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<CaiInfo>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(CaiInfo caiInfo) {
-                        if ("1".equals(caiInfo.getData().getShow_url()) && !TextUtils.isEmpty(caiInfo.getData().getUrl())){
-                            loadWebView(caiInfo.getData().getUrl());
-                        }else{
-                            loadWebView("http://www.baidu.com");
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "onError: ");
-                        mBaseLoadService.showCallback(ErrorCallback.class);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+        loadWebView("http://m.500.com/datachart/");
 
         ((HomeActivity)getActivity()).setWebviewListener(new WebviewBackListener() {
             @Override
@@ -116,6 +75,24 @@ public class HomeFragment extends BaseFragment {
         //设置Web视图
         Log.d(TAG, "loadWebView: "+url);
         wvWeb.loadUrl(url);
+        wvWeb.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                view.loadUrl(url);
+                return super.shouldOverrideUrlLoading(view, request);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                mBaseLoadService.showCallback(ErrorCallback.class);
+                super.onReceivedError(view, request, error);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+            }
+        });
     }
 
     private void setWebView() {
@@ -190,26 +167,6 @@ public class HomeFragment extends BaseFragment {
             }
 
         });
-
-        wvWeb.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                //                view.loadUrl(url);
-                return super.shouldOverrideUrlLoading(view, request);
-            }
-
-            @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Log.d(TAG, "onReceivedError: ");
-                mBaseLoadService.showCallback(ErrorCallback.class);
-                super.onReceivedError(view, request, error);
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-            }
-        });
     }
 
     @Override
@@ -217,7 +174,7 @@ public class HomeFragment extends BaseFragment {
         Log.d(TAG, "onNetReload: ");
         mBaseLoadService.showCallback(LoadingCallback.class);
         wvWeb.clearCache(true);
-        request();
+        wvWeb.reload();
     }
 
 }

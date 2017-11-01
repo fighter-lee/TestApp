@@ -9,7 +9,20 @@ android {
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
+
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : 'top.fighter_lee.testapp',
+                JPUSH_APPKEY : "f8d50b8b943a9d23d34cfdf1", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -24,22 +37,19 @@ dependencies {
     implementation 'com.android.support:support-vector-drawable:26.1.0'
     compile 'com.android.support:appcompat-v7:26.1.0'
     //友盟
-    compile project(':Pushlib')
-    compile 'cn.bmob.android:bmob-sdk:3.5.5'
+//    compile project(':Pushlib')
+//    compile ('cn.bmob.android:bmob-sdk:3.5.5'){ exclude group : 'com.google.code.gson' }
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.kingja.loadsir:loadsir:1.3.2'
-    //    compile 'cn.jiguang.sdk:jpush:3.0.9'
-    implementation files('libs/libapshare.jar')
-    implementation files('libs/open_sdk_r5788_lite.jar')
-    implementation files('libs/SocialSDK_alipay.jar')
-    implementation files('libs/SocialSDK_QQ_Full.jar')
-    implementation files('libs/SocialSDK_WeiXin_Full.jar')
-    implementation files('libs/umeng_shareboard_widget.jar')
-    implementation files('libs/umeng_social_api.jar')
-    implementation files('libs/umeng_social_net.jar')
-    implementation files('libs/umeng_social_shareboard.jar')
-    implementation files('libs/umeng_social_tool.jar')
-    implementation files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
+    compile 'cn.jiguang.sdk:jpush:3.0.9'
+    compile 'cn.jiguang.sdk:jcore:1.1.7'
+
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.2'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    compile ('com.squareup.retrofit2:converter-gson:2.3.0')
+    compile ('com.google.code.gson:gson:2.8.0')
 }
