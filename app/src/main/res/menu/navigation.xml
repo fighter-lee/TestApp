@@ -11,4 +11,9 @@
         android:icon="@drawable/ic_page"
         android:title="@string/page"/>
 
+    <item
+        android:id="@+id/navigation_other"
+        android:icon="@drawable/ic_page"
+        android:title="@string/page"/>
+
 </menu>

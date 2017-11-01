@@ -18,6 +18,7 @@ import top.fighter_lee.testapp.R;
 import top.fighter_lee.testapp.base.BaseActivity;
 import top.fighter_lee.testapp.inter.WebviewBackListener;
 import top.fighter_lee.testapp.ui.fragment.HomeFragment;
+import top.fighter_lee.testapp.ui.fragment.OtherFragment;
 import top.fighter_lee.testapp.ui.fragment.PageFragment;
 import top.fighter_lee.testapp.utils.FragmentUtils;
 
@@ -39,10 +40,14 @@ public class HomeActivity extends BaseActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    FragmentUtils.hideAllShowFragment(homeFragment);
+//                    FragmentUtils.hideAllShowFragment(homeFragment);
                     return true;
                 case R.id.navigation_page:
                     FragmentUtils.hideAllShowFragment(pageFragment);
+                    return true;
+
+                case R.id.navigation_other:
+//                    FragmentUtils.hideAllShowFragment(otherFragment);
                     return true;
             }
             return false;
@@ -51,14 +56,17 @@ public class HomeActivity extends BaseActivity {
     private HomeFragment homeFragment;
     private WebviewBackListener mListener;
     private PageFragment pageFragment;
+    private OtherFragment otherFragment;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        homeFragment = new HomeFragment();
+//        homeFragment = new HomeFragment();
         pageFragment = new PageFragment();
-        FragmentUtils.addFragment(getSupportFragmentManager(), pageFragment, R.id.fl_home,true);
-        FragmentUtils.addFragment(getSupportFragmentManager(), homeFragment, R.id.fl_home,false);
+//        otherFragment = new OtherFragment();
+        FragmentUtils.addFragment(getSupportFragmentManager(), pageFragment, R.id.fl_home,false);
+//        FragmentUtils.addFragment(getSupportFragmentManager(), homeFragment, R.id.fl_home,true);
+//        FragmentUtils.addFragment(getSupportFragmentManager(), otherFragment, R.id.fl_home,true);
     }
 
     @Override

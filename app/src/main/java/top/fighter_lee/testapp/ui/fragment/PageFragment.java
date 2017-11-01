@@ -1,5 +1,6 @@
 package top.fighter_lee.testapp.ui.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -19,15 +21,13 @@ import top.fighter_lee.testapp.R;
 import top.fighter_lee.testapp.base.BaseFragment;
 import top.fighter_lee.testapp.callback.ErrorCallback;
 import top.fighter_lee.testapp.callback.LoadingCallback;
-import top.fighter_lee.testapp.inter.WebviewBackListener;
-import top.fighter_lee.testapp.ui.activity.HomeActivity;
 
 /**
  * @author fighter_lee
  * @date 2017/10/31
  */
 public class PageFragment extends BaseFragment {
-    private static final String TAG = "HomeFragment";
+    private static final String TAG = "PageFragment";
     @BindView(R.id.wv_web)
     public WebView wvWeb;
     @BindView(R.id.progressbar)
@@ -53,21 +53,7 @@ public class PageFragment extends BaseFragment {
     @Override
     protected void init() {
         setWebView();
-        loadWebView("http://m.500.com/datachart/");
-
-        ((HomeActivity)getActivity()).setWebviewListener(new WebviewBackListener() {
-            @Override
-            public void pressBack() {
-                if (wvWeb.canGoBack()) {
-                    wvWeb.goBack();
-                }
-            }
-
-            @Override
-            public void pressRefresh() {
-                onNetReload();
-            }
-        });
+        loadWebView("http://m.kaka123.net/index.html");
     }
 
     private void loadWebView(final String url) {
@@ -75,24 +61,6 @@ public class PageFragment extends BaseFragment {
         //设置Web视图
         Log.d(TAG, "loadWebView: "+url);
         wvWeb.loadUrl(url);
-        wvWeb.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                view.loadUrl(url);
-                return super.shouldOverrideUrlLoading(view, request);
-            }
-
-            @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                mBaseLoadService.showCallback(ErrorCallback.class);
-                super.onReceivedError(view, request, error);
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-            }
-        });
     }
 
     private void setWebView() {
@@ -138,6 +106,7 @@ public class PageFragment extends BaseFragment {
         }
 
         wvWeb.setWebChromeClient(new WebChromeClient() {
+
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 Log.d(TAG, "onProgressChanged: " + newProgress);
@@ -166,6 +135,47 @@ public class PageFragment extends BaseFragment {
                 return false;
             }
 
+        });
+
+        wvWeb.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                Log.d(TAG, "shouldOverrideUrlLoading: ");
+                return super.shouldOverrideUrlLoading(view, request);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                Log.d(TAG, "onPageStarted: ");
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                Log.d(TAG, "onReceivedError: ");
+                mBaseLoadService.showCallback(ErrorCallback.class);
+                super.onReceivedError(view, request, error);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                Log.d(TAG, "onReceivedError: ");
+                mBaseLoadService.showCallback(ErrorCallback.class);
+                super.onReceivedError(view, errorCode, description, failingUrl);
+            }
+
+            @Override
+            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+                Log.d(TAG, "onReceivedHttpError: ");
+                mBaseLoadService.showCallback(ErrorCallback.class);
+                super.onReceivedHttpError(view, request, errorResponse);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                Log.d(TAG, "onPageFinished: ");
+                super.onPageFinished(view, url);
+            }
         });
     }
 
