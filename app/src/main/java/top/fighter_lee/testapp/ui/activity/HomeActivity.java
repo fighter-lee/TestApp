@@ -48,7 +48,7 @@ public class HomeActivity extends BaseActivity {
                     FragmentUtils.hideAllShowFragment(pageFragment1);
                     return true;
 
-                case R.id.navigation_other:
+                case R.id.navigation_page2:
                     FragmentUtils.hideAllShowFragment(pageFragment2);
                     return true;
             }

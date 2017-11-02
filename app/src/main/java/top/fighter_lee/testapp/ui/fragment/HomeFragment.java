@@ -67,9 +67,10 @@ public class HomeFragment extends WebviewFragment {
 
                     @Override
                     public void onNext(CaiInfo caiInfo) {
+                        showSuccessUI();
                         if ("1".equals(caiInfo.getData().getShow_url()) && !TextUtils.isEmpty(caiInfo.getData().getUrl())) {
-//                            loadWebView(caiInfo.getData().getUrl());
-                            loadWebView("http://www.baidu.com/");
+                            loadWebView(caiInfo.getData().getUrl());
+//                            loadWebView("http://www.baidu.com/");
                         } else {
                             loadWebView("http://www.500.com/");
                         }
@@ -104,7 +105,7 @@ public class HomeFragment extends WebviewFragment {
                 .setAgentWebWebSettings(getSettings())//设置 AgentWebSettings
                 .setWebViewClient(mWebViewClient)//WebViewClient ， 与WebView 一样
                 .setWebChromeClient(mWebChromeClient) //WebChromeClient
-                .setSecurityType(AgentWeb.SecurityType.strict) //严格模式
+//                .setSecurityType(AgentWeb.SecurityType.strict) //严格模式
                 .openParallelDownload()//打开并行下载 , 默认串行下载
                 .setNotifyIcon(R.mipmap.download)
                 .createAgentWeb()//创建AgentWeb
