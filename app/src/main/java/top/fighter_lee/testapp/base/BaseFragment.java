@@ -27,30 +27,26 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 界面初始化
      */
-    protected abstract void init();
+    protected abstract void init(View view);
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (getContentViewLayoutID() != 0) {
-            View rootView = inflater.inflate(getContentViewLayoutID(), container, false);
-            mBaseLoadService = LoadSir.getDefault().register(rootView, new Callback.OnReloadListener() {
-                @Override
-                public void onReload(View v) {
-                    onNetReload();
-                }
-            });
-            return mBaseLoadService.getLoadLayout();
-        } else {
-            return super.onCreateView(inflater, container, savedInstanceState);
-        }
+        View rootView = View.inflate(getActivity(), getContentViewLayoutID(), null);
+        mBaseLoadService = LoadSir.getDefault().register(rootView, new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                onNetReload();
+            }
+        });
+        return mBaseLoadService.getLoadLayout();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
-        init();
+        init(view);
     }
 
     @Override

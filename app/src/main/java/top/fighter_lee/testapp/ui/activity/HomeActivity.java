@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -16,9 +17,10 @@ import android.widget.Toast;
 import butterknife.BindView;
 import top.fighter_lee.testapp.R;
 import top.fighter_lee.testapp.base.BaseActivity;
+import top.fighter_lee.testapp.base.WebviewFragment;
+import top.fighter_lee.testapp.inter.FragmentKeyDown;
 import top.fighter_lee.testapp.inter.WebviewBackListener;
 import top.fighter_lee.testapp.ui.fragment.HomeFragment;
-import top.fighter_lee.testapp.ui.fragment.OtherFragment;
 import top.fighter_lee.testapp.ui.fragment.PageFragment;
 import top.fighter_lee.testapp.utils.FragmentUtils;
 
@@ -40,14 +42,14 @@ public class HomeActivity extends BaseActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-//                    FragmentUtils.hideAllShowFragment(homeFragment);
+                    FragmentUtils.hideAllShowFragment(homeFragment);
                     return true;
                 case R.id.navigation_page:
-                    FragmentUtils.hideAllShowFragment(pageFragment);
+                    FragmentUtils.hideAllShowFragment(pageFragment1);
                     return true;
 
                 case R.id.navigation_other:
-//                    FragmentUtils.hideAllShowFragment(otherFragment);
+                    FragmentUtils.hideAllShowFragment(pageFragment2);
                     return true;
             }
             return false;
@@ -55,18 +57,26 @@ public class HomeActivity extends BaseActivity {
     };
     private HomeFragment homeFragment;
     private WebviewBackListener mListener;
-    private PageFragment pageFragment;
-    private OtherFragment otherFragment;
+    private PageFragment pageFragment1;
+    private PageFragment pageFragment2;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-//        homeFragment = new HomeFragment();
-        pageFragment = new PageFragment();
-//        otherFragment = new OtherFragment();
-        FragmentUtils.addFragment(getSupportFragmentManager(), pageFragment, R.id.fl_home,false);
-//        FragmentUtils.addFragment(getSupportFragmentManager(), homeFragment, R.id.fl_home,true);
-//        FragmentUtils.addFragment(getSupportFragmentManager(), otherFragment, R.id.fl_home,true);
+        homeFragment = new HomeFragment();
+
+        Bundle bundle1 = new Bundle();
+        bundle1.putString(PageFragment.KEY_WEB_URL,"http://m.500.com/info/article/");
+        pageFragment1 = new PageFragment();
+        pageFragment1.setArguments(bundle1);
+
+        Bundle bundle2 = new Bundle();
+        bundle2.putString(PageFragment.KEY_WEB_URL,"http://ifinance.ifeng.com/?srctag=xzydh4");
+        pageFragment2 = new PageFragment();
+        pageFragment2.setArguments(bundle2);
+        FragmentUtils.addFragment(getSupportFragmentManager(), pageFragment1, R.id.fl_home, true);
+        FragmentUtils.addFragment(getSupportFragmentManager(), homeFragment, R.id.fl_home, false);
+        FragmentUtils.addFragment(getSupportFragmentManager(), pageFragment2, R.id.fl_home, true);
     }
 
     @Override
@@ -76,12 +86,25 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Fragment fragment = FragmentUtils.getTopShowFragment(getSupportFragmentManager());
+        if (fragment instanceof WebviewFragment) {
+            WebviewFragment mAgentWebFragment = (WebviewFragment) fragment;
+            FragmentKeyDown mFragmentKeyDown = mAgentWebFragment;
+            if (mFragmentKeyDown.onFragmentKeyDown(keyCode, event)) {
+                return true;
+            } else {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    exit();
+                    return false;
+                }
+            }
+        }
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             exit();
             return false;
-        } else {
-            return super.onKeyDown(keyCode, event);
         }
+        return super.onKeyDown(keyCode, event);
+
     }
 
     public void exit() {
@@ -104,12 +127,11 @@ public class HomeActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             isExit = false;
-            navigation.setSelectedItemId(R.id.navigation_home);
         }
 
     };
 
-    public void setWebviewListener(WebviewBackListener listener){
+    public void setWebviewListener(WebviewBackListener listener) {
         this.mListener = listener;
     }
 }
