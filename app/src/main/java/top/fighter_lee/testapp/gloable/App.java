@@ -5,14 +5,13 @@ import android.content.Context;
 
 import com.kingja.loadsir.core.LoadSir;
 
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobConfig;
 import cn.jpush.android.api.JPushInterface;
 import top.fighter_lee.testapp.callback.ErrorCallback;
 import top.fighter_lee.testapp.callback.LoadingCallback;
 
-/**
- * @author fighter_lee
- * @date 2017/10/30
- */
+
 public class App extends Application {
 
     public static Context context;
@@ -26,7 +25,7 @@ public class App extends Application {
         JPushInterface.init(this);
         initLoadView();
 
-//        initBmob();
+        initBmob();
 
     }
 
@@ -38,14 +37,14 @@ public class App extends Application {
                 .commit();
     }
 
-//    private void initBmob() {
-//        BmobConfig config =new BmobConfig.Builder(this)
-//                //设置appkey
-//                .setApplicationId("bfedbae1aa244189c0db3c691d779687")
-//                //请求超时时间（单位为秒）：默认15s
-//                .setConnectTimeout(10)
-//                .build();
-//        Bmob.initialize(config);
-//    }
+    private void initBmob() {
+        BmobConfig config =new BmobConfig.Builder(this)
+                //设置appkey
+                .setApplicationId("ad591125b7624f5302841225704454bb")
+                //请求超时时间（单位为秒）：默认15s
+                .setConnectTimeout(10)
+                .build();
+        Bmob.initialize(config);
+    }
 
 }

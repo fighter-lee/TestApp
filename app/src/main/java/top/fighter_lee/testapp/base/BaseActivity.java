@@ -11,10 +11,6 @@ import top.fighter_lee.testapp.R;
 import top.fighter_lee.testapp.utils.ActivityCollector;
 import top.fighter_lee.testapp.utils.SystemBarHelper;
 
-/**
- * Created by fighter_lee on 2017/8/8.
- */
-
 public abstract class BaseActivity extends AppCompatActivity {
 
     @Override

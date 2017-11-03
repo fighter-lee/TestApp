@@ -7,13 +7,13 @@
         android:title="@string/title_home"/>
 
     <item
-        android:id="@+id/navigation_page"
-        android:icon="@drawable/ic_page"
-        android:title="@string/page"/>
+        android:id="@+id/navigation_pay"
+        android:icon="@drawable/ic_pay"
+        android:title="@string/title_pay"/>
 
     <item
-        android:id="@+id/navigation_page2"
-        android:icon="@drawable/ic_finance"
-        android:title="@string/title_pay"/>
+        android:id="@+id/navigation_refresh"
+        android:icon="@drawable/ic_refresh"
+        android:title="@string/title_refresh"/>
 
 </menu>

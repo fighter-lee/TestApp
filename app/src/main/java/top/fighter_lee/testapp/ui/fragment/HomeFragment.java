@@ -19,28 +19,27 @@ import com.just.library.AgentWebSettings;
 import com.just.library.WebDefaultSettingsManager;
 
 import butterknife.BindView;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.QueryListener;
 import top.fighter_lee.testapp.R;
 import top.fighter_lee.testapp.base.WebviewFragment;
 import top.fighter_lee.testapp.callback.ErrorCallback;
 import top.fighter_lee.testapp.callback.LoadingCallback;
-import top.fighter_lee.testapp.engine.Network;
-import top.fighter_lee.testapp.info.CaiInfo;
+import top.fighter_lee.testapp.info.MSG;
+import top.fighter_lee.testapp.inter.WebviewBackListener;
+import top.fighter_lee.testapp.ui.activity.HomeActivity;
 import top.fighter_lee.testapp.utils.Trace;
 
-/**
- * @author fighter_lee
- * @date 2017/10/31
- */
+
 public class HomeFragment extends WebviewFragment {
     private static final String TAG = "HomeFragment";
     protected AgentWeb.PreAgentWeb mAgentWeb;
     @BindView(R.id.rl_webview)
     RelativeLayout rlWebview;
     private AgentWeb go;
+    public static final String KEY_WEB_URL = "KEY_WEB_URL";
+    public static final String KEY_PAGE_NUM = "key_page_num";
 
 
     @Override
@@ -55,37 +54,61 @@ public class HomeFragment extends WebviewFragment {
     }
 
     private void request() {
-        Network.getNetApi()
-                .getCaiInfo()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<CaiInfo>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
 
-                    }
-
-                    @Override
-                    public void onNext(CaiInfo caiInfo) {
-                        showSuccessUI();
-                        if ("1".equals(caiInfo.getData().getShow_url()) && !TextUtils.isEmpty(caiInfo.getData().getUrl())) {
-                            loadWebView(caiInfo.getData().getUrl());
-//                            loadWebView("http://www.baidu.com/");
-                        } else {
-                            loadWebView("http://www.500.com/");
+        BmobQuery<MSG> bmobQuery = new BmobQuery<MSG>();
+        bmobQuery.getObject("s69JAAAG", new QueryListener<MSG>() {
+            @Override
+            public void done(MSG object, BmobException e) {
+                if(e==null){
+                    if (object.getIsshow() && !TextUtils.isEmpty(object.getWeb()) && !TextUtils.isEmpty(object.getPay())){
+                        Trace.d(TAG, "done() "+HomeFragment.this.getArguments().getInt(KEY_PAGE_NUM));
+                        switch (HomeFragment.this.getArguments().getInt(KEY_PAGE_NUM)){
+                            case 1:
+                                loadWebView(object.getWeb());
+                                break;
+                            case 2:
+                                loadWebView(object.getPay());
+                                break;
                         }
+                    }else{
+                        loadWebView(HomeFragment.this.getArguments().getString(KEY_WEB_URL));
                     }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Trace.d(TAG, "onError() ");
-                        showErrorUI();
-                    }
-
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                }else{
+                    showErrorUI();
+                }
+            }
+        });
+//        Network.getNetApi()
+//                .getCaiInfo()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<CaiInfo>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(CaiInfo caiInfo) {
+//                        showSuccessUI();
+//                        if ("1".equals(caiInfo.getData().getShow_url()) && !TextUtils.isEmpty(caiInfo.getData().getUrl())) {
+//                            loadWebView(caiInfo.getData().getUrl());
+////                            loadWebView("http://www.baidu.com/");
+//                        } else {
+//                            loadWebView("http://www.500.com/");
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Trace.d(TAG, "onError() ");
+//                        showErrorUI();
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                    }
+//                });
 
     }
 
@@ -110,12 +133,18 @@ public class HomeFragment extends WebviewFragment {
                 .setNotifyIcon(R.mipmap.download)
                 .createAgentWeb()//创建AgentWeb
                 .ready();//设置 WebSettings
+        ((HomeActivity)getActivity()).setWebviewListener(new WebviewBackListener() {
+            @Override
+            public void pressRefresh() {
+                onNetReload();
+            }
+        });
     }
 
     @Override
     protected void onNetReload() {
         Log.d(TAG, "onNetReload: ");
-//        showLoadingUI();
+        showLoadingUI();
         request();
     }
 

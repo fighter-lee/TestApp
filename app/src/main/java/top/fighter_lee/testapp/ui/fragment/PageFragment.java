@@ -24,12 +24,9 @@ import top.fighter_lee.testapp.callback.ErrorCallback;
 import top.fighter_lee.testapp.callback.LoadingCallback;
 import top.fighter_lee.testapp.utils.Trace;
 
-/**
- * @author fighter_lee
- * @date 2017/10/31
- */
+
 public class PageFragment extends WebviewFragment {
-    private static final String TAG = "HomeFragment";
+    private static final String TAG = "PageFragment";
     protected AgentWeb.PreAgentWeb mAgentWeb;
     @BindView(R.id.rl_webview)
     RelativeLayout rlWebview;

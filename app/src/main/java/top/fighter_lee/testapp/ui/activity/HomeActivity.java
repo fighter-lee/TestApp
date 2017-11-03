@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import top.fighter_lee.testapp.R;
 import top.fighter_lee.testapp.base.BaseActivity;
@@ -44,39 +46,43 @@ public class HomeActivity extends BaseActivity {
                 case R.id.navigation_home:
                     FragmentUtils.hideAllShowFragment(homeFragment);
                     return true;
-                case R.id.navigation_page:
+                case R.id.navigation_pay:
                     FragmentUtils.hideAllShowFragment(pageFragment1);
                     return true;
 
-                case R.id.navigation_page2:
-                    FragmentUtils.hideAllShowFragment(pageFragment2);
+                case R.id.navigation_refresh:
+                    for (WebviewBackListener mListener : mListeners) {
+                        if (mListener != null){
+                            mListener.pressRefresh();
+                        }
+                    }
+                    mHandler.sendEmptyMessageDelayed(0, 2000);
                     return true;
             }
             return false;
         }
     };
     private HomeFragment homeFragment;
-    private WebviewBackListener mListener;
-    private PageFragment pageFragment1;
-    private PageFragment pageFragment2;
+    private ArrayList<WebviewBackListener> mListeners = new ArrayList<>();
+    private HomeFragment pageFragment1;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         homeFragment = new HomeFragment();
+        Bundle bundle2 = new Bundle();
+        bundle2.putString(PageFragment.KEY_WEB_URL,"http://m.zhcw.com/");
+        bundle2.putInt(HomeFragment.KEY_PAGE_NUM,1);
+        homeFragment.setArguments(bundle2);
 
         Bundle bundle1 = new Bundle();
         bundle1.putString(PageFragment.KEY_WEB_URL,"http://m.500.com/info/article/");
-        pageFragment1 = new PageFragment();
+        bundle1.putInt(HomeFragment.KEY_PAGE_NUM,2);
+        pageFragment1 = new HomeFragment();
         pageFragment1.setArguments(bundle1);
 
-        Bundle bundle2 = new Bundle();
-        bundle2.putString(PageFragment.KEY_WEB_URL,"http://ifinance.ifeng.com/?srctag=xzydh4");
-        pageFragment2 = new PageFragment();
-        pageFragment2.setArguments(bundle2);
         FragmentUtils.addFragment(getSupportFragmentManager(), pageFragment1, R.id.fl_home, true);
         FragmentUtils.addFragment(getSupportFragmentManager(), homeFragment, R.id.fl_home, false);
-        FragmentUtils.addFragment(getSupportFragmentManager(), pageFragment2, R.id.fl_home, true);
     }
 
     @Override
@@ -127,11 +133,13 @@ public class HomeActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             isExit = false;
+            navigation.setSelectedItemId(R.id.navigation_home);
         }
 
     };
 
     public void setWebviewListener(WebviewBackListener listener) {
-        this.mListener = listener;
+
+        mListeners.add(listener);
     }
 }

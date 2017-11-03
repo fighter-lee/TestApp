@@ -10,10 +10,7 @@ import butterknife.BindView;
 import top.fighter_lee.testapp.R;
 import top.fighter_lee.testapp.base.BaseActivity;
 
-/**
- * @author fighter_lee
- * @date 2017/10/30
- */
+
 
 public class WelcomeActivity extends BaseActivity {
     @BindView(R.id.iv_welcome)

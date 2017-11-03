@@ -1,8 +1,5 @@
 package top.fighter_lee.testapp.utils;
 
-/**
- * Created by fighter_lee on 2017/8/24.
- */
 
 import android.annotation.TargetApi;
 import android.app.Activity;

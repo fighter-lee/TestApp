@@ -3,11 +3,12 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "top.fighter_lee.testapp"
+        applicationId "com.abcde.shishicai1"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
         ndk {
@@ -17,8 +18,8 @@ android {
         }
 
         manifestPlaceholders = [
-                JPUSH_PKGNAME : 'top.fighter_lee.testapp',
-                JPUSH_APPKEY : "f8d50b8b943a9d23d34cfdf1", //JPush上注册的包名对应的appkey.
+                JPUSH_PKGNAME : 'com.abcde.shishicai1',
+                JPUSH_APPKEY : "660da32e499b0abd2b17540b", //JPush上注册的包名对应的appkey.
                 JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
         ]
     }
@@ -46,11 +47,20 @@ dependencies {
     compile 'cn.jiguang.sdk:jpush:3.0.9'
     compile 'cn.jiguang.sdk:jcore:1.1.7'
 
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'io.reactivex.rxjava2:rxjava:2.1.2'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    compile ('com.squareup.retrofit2:converter-gson:2.3.0')
-    compile ('com.google.code.gson:gson:2.8.0')
+//    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+//    compile 'io.reactivex.rxjava2:rxjava:2.1.2'
+//    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+//    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+//    compile ('com.squareup.retrofit2:converter-gson:2.3.0')
+
     compile 'com.just.agentweb:agentweb:2.0.1'
+
+    compile ('cn.bmob.android:bmob-sdk:3.5.8'){
+//        exclude group: 'com.google.code.gson'
+//        exclude module: 'gson'
+    }
+//    compile ('com.google.code.gson:gson:2.8.0')
+//        exclude group: 'io.reactivex.rxjava2:rxandroid'
+//        exclude group: 'io.reactivex.rxjava2:rxjava'
+
 }
