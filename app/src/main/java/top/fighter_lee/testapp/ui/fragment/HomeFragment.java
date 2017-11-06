@@ -31,10 +31,7 @@ import top.fighter_lee.testapp.engine.Network;
 import top.fighter_lee.testapp.info.CaiInfo;
 import top.fighter_lee.testapp.utils.Trace;
 
-/**
- * @author fighter_lee
- * @date 2017/10/31
- */
+
 public class HomeFragment extends WebviewFragment {
     private static final String TAG = "HomeFragment";
     protected AgentWeb.PreAgentWeb mAgentWeb;

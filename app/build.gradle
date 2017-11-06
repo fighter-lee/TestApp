@@ -18,7 +18,7 @@ android {
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME : 'top.fighter_lee.testapp',
-                JPUSH_APPKEY : "f8d50b8b943a9d23d34cfdf1", //JPush上注册的包名对应的appkey.
+                JPUSH_APPKEY : "d9948ac3da513f8b89c9c229", //JPush上注册的包名对应的appkey.
                 JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
         ]
     }
@@ -51,6 +51,7 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile ('com.squareup.retrofit2:converter-gson:2.3.0')
+    compile 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     compile ('com.google.code.gson:gson:2.8.0')
     compile 'com.just.agentweb:agentweb:2.0.1'
 }

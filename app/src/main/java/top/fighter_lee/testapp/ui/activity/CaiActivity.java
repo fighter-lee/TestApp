@@ -19,16 +19,17 @@ import top.fighter_lee.testapp.R;
 import top.fighter_lee.testapp.base.BaseActivity;
 import top.fighter_lee.testapp.base.WebviewFragment;
 import top.fighter_lee.testapp.inter.FragmentKeyDown;
-import top.fighter_lee.testapp.ui.fragment.NormalFragment;
+import top.fighter_lee.testapp.inter.WebviewBackListener;
+import top.fighter_lee.testapp.ui.fragment.HomeFragment;
 import top.fighter_lee.testapp.utils.FragmentUtils;
 
-public class HomeActivity extends BaseActivity {
+public class CaiActivity extends BaseActivity {
 
     private static final String TAG = "HomeActivity";
     @BindView(R.id.fl_home)
     FrameLayout flHome;
-    @BindView(R.id.navigation)
-    BottomNavigationView navigation;
+//    @BindView(R.id.navigation)
+//    BottomNavigationView navigation;
     @BindView(R.id.container)
     ConstraintLayout container;
 
@@ -45,25 +46,24 @@ public class HomeActivity extends BaseActivity {
                 case R.id.navigation_home:
 
                     return true;
-                case R.id.navigation_tools:
-                    return true;
-
             }
             return false;
         }
     };
+    private HomeFragment homeFragment;
+    private WebviewBackListener mListener;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        homeFragment = new HomeFragment();
+        FragmentUtils.addFragment(getSupportFragmentManager(), homeFragment, R.id.fl_home, false);
 
-        NormalFragment normalFragment = new NormalFragment();
-        FragmentUtils.addFragment(getSupportFragmentManager(), normalFragment, R.id.fl_home, false);
     }
 
     @Override
     protected int getContentViewLayoutID() {
-        return R.layout.activity_home;
+        return R.layout.activity_cai;
     }
 
     @Override
@@ -102,7 +102,6 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
-
     Handler mHandler = new Handler() {
 
         @Override
@@ -113,4 +112,7 @@ public class HomeActivity extends BaseActivity {
 
     };
 
+    public void setWebviewListener(WebviewBackListener listener) {
+        this.mListener = listener;
+    }
 }

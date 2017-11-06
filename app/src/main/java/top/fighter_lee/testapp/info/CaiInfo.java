@@ -1,9 +1,6 @@
 package top.fighter_lee.testapp.info;
 
-/**
- * @author fighter_lee
- * @date 2017/11/1
- */
+
 public class CaiInfo {
 
 
