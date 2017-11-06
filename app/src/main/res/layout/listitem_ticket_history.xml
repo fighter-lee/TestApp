@@ -9,7 +9,7 @@
         android:id="@+id/rlTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="30px">
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/tvOpenSerial"
@@ -24,7 +24,7 @@
             android:id="@+id/tvOpenTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_below="@id/tvOpenSerial"
             android:text="09月07日（周四）开奖"
             android:textColor="@android:color/tertiary_text_light"
             android:textSize="16dp" />
@@ -35,8 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rlTime"
-        android:layout_marginBottom="30px"
-        android:padding="15px" />
+        android:layout_marginBottom="10dp"
+        android:padding="5dp" />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
