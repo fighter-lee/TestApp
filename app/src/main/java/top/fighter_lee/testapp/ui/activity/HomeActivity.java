@@ -44,7 +44,9 @@ public class HomeActivity extends BaseActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    FragmentUtils.hideAllShowFragment(homeFragment);
+                    if (FragmentUtils.getTopShowFragment(getSupportFragmentManager()).toString() == homeFragment.toString()) {
+                        FragmentUtils.hideAllShowFragment(homeFragment);
+                    }
                     return true;
                 case R.id.navigation_pay:
                     FragmentUtils.hideAllShowFragment(pageFragment1);
@@ -52,10 +54,14 @@ public class HomeActivity extends BaseActivity {
 
                 case R.id.navigation_refresh:
                     for (WebviewBackListener mListener : mListeners) {
-                        if (mListener != null){
+                        if (mListener != null) {
                             mListener.pressRefresh();
                         }
                     }
+                    mHandler.sendEmptyMessageDelayed(0, 2000);
+                    return true;
+                case R.id.navigation_back:
+                    onKeyDown(KeyEvent.KEYCODE_BACK, new KeyEvent(KeyEvent.KEYCODE_BACK,KeyEvent.KEYCODE_BACK));
                     mHandler.sendEmptyMessageDelayed(0, 2000);
                     return true;
             }
@@ -71,13 +77,13 @@ public class HomeActivity extends BaseActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         homeFragment = new HomeFragment();
         Bundle bundle2 = new Bundle();
-        bundle2.putString(PageFragment.KEY_WEB_URL,"http://m.zhcw.com/");
-        bundle2.putInt(HomeFragment.KEY_PAGE_NUM,1);
+        bundle2.putString(PageFragment.KEY_WEB_URL, "http://m.zhcw.com/");
+        bundle2.putInt(HomeFragment.KEY_PAGE_NUM, 1);
         homeFragment.setArguments(bundle2);
 
         Bundle bundle1 = new Bundle();
-        bundle1.putString(PageFragment.KEY_WEB_URL,"http://m.500.com/info/article/");
-        bundle1.putInt(HomeFragment.KEY_PAGE_NUM,2);
+        bundle1.putString(PageFragment.KEY_WEB_URL, "http://m.500.com/info/article/");
+        bundle1.putInt(HomeFragment.KEY_PAGE_NUM, 2);
         pageFragment1 = new HomeFragment();
         pageFragment1.setArguments(bundle1);
 
@@ -92,20 +98,18 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Fragment fragment = FragmentUtils.getTopShowFragment(getSupportFragmentManager());
-        if (fragment instanceof WebviewFragment) {
-            WebviewFragment mAgentWebFragment = (WebviewFragment) fragment;
-            FragmentKeyDown mFragmentKeyDown = mAgentWebFragment;
-            if (mFragmentKeyDown.onFragmentKeyDown(keyCode, event)) {
-                return true;
-            } else {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Fragment fragment = FragmentUtils.getTopShowFragment(getSupportFragmentManager());
+            if (fragment instanceof WebviewFragment) {
+                WebviewFragment mAgentWebFragment = (WebviewFragment) fragment;
+                FragmentKeyDown mFragmentKeyDown = mAgentWebFragment;
+                if (mFragmentKeyDown.onFragmentKeyDown(keyCode, event)) {
+                    return true;
+                } else {
                     exit();
                     return false;
                 }
             }
-        }
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
             exit();
             return false;
         }

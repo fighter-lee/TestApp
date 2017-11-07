@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_refresh"
         android:title="@string/title_refresh"/>
 
+    <item
+        android:id="@+id/navigation_back"
+        android:icon="@drawable/ic_back"
+        android:title="@string/title_back"/>
+
 </menu>
