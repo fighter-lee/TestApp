@@ -21,4 +21,9 @@
         android:icon="@drawable/ic_back"
         android:title="@string/title_back"/>
 
+    <item
+        android:id="@+id/navigation_share"
+        android:icon="@drawable/ic_share"
+        android:title="@string/title_share"/>
+
 </menu>

@@ -29,6 +29,7 @@ import top.fighter_lee.testapp.callback.LoadingCallback;
 import top.fighter_lee.testapp.info.MSG;
 import top.fighter_lee.testapp.inter.WebviewBackListener;
 import top.fighter_lee.testapp.ui.activity.HomeActivity;
+import top.fighter_lee.testapp.utils.SPUtils;
 import top.fighter_lee.testapp.utils.Trace;
 
 
@@ -64,6 +65,7 @@ public class HomeFragment extends WebviewFragment {
                         Trace.d(TAG, "done() "+HomeFragment.this.getArguments().getInt(KEY_PAGE_NUM));
                         switch (HomeFragment.this.getArguments().getInt(KEY_PAGE_NUM)){
                             case 1:
+                                new SPUtils("Test").put(HomeActivity.SHARE_URL,object.getWeb());
                                 loadWebView(object.getWeb());
                                 break;
                             case 2:

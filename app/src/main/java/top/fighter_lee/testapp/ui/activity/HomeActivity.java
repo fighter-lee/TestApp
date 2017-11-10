@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -25,10 +24,12 @@ import top.fighter_lee.testapp.inter.WebviewBackListener;
 import top.fighter_lee.testapp.ui.fragment.HomeFragment;
 import top.fighter_lee.testapp.ui.fragment.PageFragment;
 import top.fighter_lee.testapp.utils.FragmentUtils;
+import top.fighter_lee.testapp.utils.SPUtils;
 
 public class HomeActivity extends BaseActivity {
 
     private static final String TAG = "HomeActivity";
+    public static final String SHARE_URL = "share_url";
     @BindView(R.id.fl_home)
     FrameLayout flHome;
     @BindView(R.id.navigation)
@@ -63,6 +64,13 @@ public class HomeActivity extends BaseActivity {
                 case R.id.navigation_back:
                     onKeyDown(KeyEvent.KEYCODE_BACK, new KeyEvent(KeyEvent.KEYCODE_BACK,KeyEvent.KEYCODE_BACK));
                     mHandler.sendEmptyMessageDelayed(0, 2000);
+                    return true;
+                case R.id.navigation_share:
+                    mHandler.sendEmptyMessageDelayed(0, 2000);
+                    Intent textIntent = new Intent(Intent.ACTION_SEND);
+                    textIntent.setType("text/plain");
+                    textIntent.putExtra(Intent.EXTRA_TEXT, "135彩票："+new SPUtils("Test").getString(SHARE_URL));
+                    startActivity(Intent.createChooser(textIntent, "分享"));
                     return true;
             }
             return false;
@@ -107,27 +115,27 @@ public class HomeActivity extends BaseActivity {
                     return true;
                 } else {
                     exit();
-                    return false;
+                    return super.onKeyDown(keyCode, event);
                 }
             }
-            exit();
-            return false;
+//            exit();
+            return super.onKeyDown(keyCode, event);
         }
         return super.onKeyDown(keyCode, event);
 
     }
 
     public void exit() {
-        if (!isExit) {
-            isExit = true;
-            Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
-            mHandler.sendEmptyMessageDelayed(0, 2000);
-        } else {
+//        if (!isExit) {
+//            isExit = true;
+//            Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+//            mHandler.sendEmptyMessageDelayed(0, 2000);
+//        } else {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             startActivity(intent);
             System.exit(0);
-        }
+//        }
     }
 
 
