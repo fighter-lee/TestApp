@@ -45,9 +45,7 @@ public class HomeActivity extends BaseActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    if (FragmentUtils.getTopShowFragment(getSupportFragmentManager()).toString() == homeFragment.toString()) {
-                        FragmentUtils.hideAllShowFragment(homeFragment);
-                    }
+                    FragmentUtils.hideAllShowFragment(homeFragment);
                     return true;
                 case R.id.navigation_pay:
                     FragmentUtils.hideAllShowFragment(pageFragment1);
