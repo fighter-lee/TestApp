@@ -1,5 +1,8 @@
 package top.fighter_lee.testapp.ui.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
@@ -189,8 +192,48 @@ public class HomeFragment extends WebviewFragment {
     };
 
     WebViewClient mWebViewClient = new WebViewClient() {
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Trace.d(TAG, "shouldOverrideUrlLoading() " + url);
+            if (url.contains("platformapi/startapp")) {
+                startAlipayActivity(url);
+                return true;
+                // android  6.0 两种方式获取intent都可以跳转支付宝成功,7.1测试不成功
+            } else if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
+                    && (url.contains("platformapi") && url.contains("startapp"))) {
+                startAlipayActivity(url);
+                return true;
+            } else if (url.contains("weixin://wap/pay?")) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+                return true;
+            } else if (url.contains("mqqapi://forward")){
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+                return true;
+            }
+            return super.shouldOverrideUrlLoading(view, url);
+        }
+
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            String url = request.getUrl().toString();
+            Trace.d(TAG, "shouldOverrideUrlLoading() "+url);
+            if (url.contains("platformapi/startapp")) {
+                startAlipayActivity(url);
+                // android  6.0 两种方式获取intent都可以跳转支付宝成功,7.1测试不成功
+            } else if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
+                    && (url.contains("platformapi") && url.contains("startapp"))) {
+                startAlipayActivity(url);
+            } else {
+//                mWebView.loadUrl(url)
+            }
             return super.shouldOverrideUrlLoading(view, request);
         }
 
@@ -213,6 +256,21 @@ public class HomeFragment extends WebviewFragment {
             super.onPageFinished(view, url);
         }
     };
+
+    // 调起支付宝并跳转到指定页面
+    private void startAlipayActivity(String url) {
+        Intent intent;
+        try {
+            intent = Intent.parseUri(url,
+                    Intent.URI_INTENT_SCHEME);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            intent.setComponent(null);
+            startActivity(intent);
+            getActivity().finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public AgentWebSettings getSettings() {
         return WebDefaultSettingsManager.getInstance();

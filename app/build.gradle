@@ -5,7 +5,7 @@ android {
     defaultConfig {
         applicationId "com.abcde.shishicai1"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 19
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
