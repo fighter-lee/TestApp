@@ -30,6 +30,7 @@ public class HomeActivity extends BaseActivity {
 
     private static final String TAG = "HomeActivity";
     public static final String SHARE_URL = "share_url";
+    public static final String IS_SHOW = "is_show";
     @BindView(R.id.fl_home)
     FrameLayout flHome;
     @BindView(R.id.navigation)
@@ -151,5 +152,14 @@ public class HomeActivity extends BaseActivity {
     public void setWebviewListener(WebviewBackListener listener) {
 
         mListeners.add(listener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        boolean test = new SPUtils("Test").getBoolean(IS_SHOW, false);
+        if (!test){
+            navigation.getMenu().getItem(1).setTitle("资讯");
+        }
     }
 }
