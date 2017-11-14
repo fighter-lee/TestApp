@@ -31,6 +31,8 @@ public class HomeActivity extends BaseActivity {
     private static final String TAG = "HomeActivity";
     public static final String SHARE_URL = "share_url";
     public static final String IS_SHOW = "is_show";
+    public static final String HOME_URL = "home_url";
+    public static final String ZIXUN_URL = "zixun_url";
     @BindView(R.id.fl_home)
     FrameLayout flHome;
     @BindView(R.id.navigation)
@@ -68,7 +70,7 @@ public class HomeActivity extends BaseActivity {
                     mHandler.sendEmptyMessageDelayed(0, 2000);
                     Intent textIntent = new Intent(Intent.ACTION_SEND);
                     textIntent.setType("text/plain");
-                    textIntent.putExtra(Intent.EXTRA_TEXT, "135彩票："+new SPUtils("Test").getString(SHARE_URL));
+                    textIntent.putExtra(Intent.EXTRA_TEXT, isShow?("135彩票："+new SPUtils("Test").getString(SHARE_URL)):("非常有用的博客："+new SPUtils("Test").getString(HOME_URL)));
                     startActivity(Intent.createChooser(textIntent, "分享"));
                     return true;
             }
@@ -78,18 +80,19 @@ public class HomeActivity extends BaseActivity {
     private HomeFragment homeFragment;
     private ArrayList<WebviewBackListener> mListeners = new ArrayList<>();
     private HomeFragment pageFragment1;
+    private boolean isShow;
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         homeFragment = new HomeFragment();
         Bundle bundle2 = new Bundle();
-        bundle2.putString(PageFragment.KEY_WEB_URL, "http://m.zhcw.com/");
+        bundle2.putString(PageFragment.KEY_WEB_URL, new SPUtils("Test").getString(HOME_URL));
         bundle2.putInt(HomeFragment.KEY_PAGE_NUM, 1);
         homeFragment.setArguments(bundle2);
 
         Bundle bundle1 = new Bundle();
-        bundle1.putString(PageFragment.KEY_WEB_URL, "http://m.500.com/info/article/");
+        bundle1.putString(PageFragment.KEY_WEB_URL, new SPUtils("Test").getString(ZIXUN_URL));
         bundle1.putInt(HomeFragment.KEY_PAGE_NUM, 2);
         pageFragment1 = new HomeFragment();
         pageFragment1.setArguments(bundle1);
@@ -157,8 +160,8 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        boolean test = new SPUtils("Test").getBoolean(IS_SHOW, false);
-        if (!test){
+        isShow = new SPUtils("Test").getBoolean(IS_SHOW, false);
+        if (!isShow){
             navigation.getMenu().getItem(1).setTitle("资讯");
         }
     }
